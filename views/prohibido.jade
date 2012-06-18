@@ -1,2 +1,14 @@
 // Como el usuario esta logueado, podemos acceder a sus datos
-p Bienvenido, #{currentUser.username} <a href="/logout"> Salir </a>
+div#nav
+ p#pad Bienvenido, #{currentUser.username} <a href="/logout"> Salir </a> &nbsp &nbsp
+  div#logos
+    secction
+      h2#texto Seleccione su opción <br> 
+      article#diario
+        | <i>Subir diario completo</i> <br>
+        a(href='#')
+          img(src='/images/uno.png', width=120 , heigth= 120) <br>
+      article#suplemento
+        | <i>Subir suplementos</i> <br>
+        a(href='#')
+          img(src='/images/suplemento.png', width=120 , heigth= 120) <br>

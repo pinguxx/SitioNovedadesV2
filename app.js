@@ -82,7 +82,7 @@ app.get('/',function(req,res){
 
 
 // Go Index Administrador
-app.get('/index',function(req,res){
+/*app.get('/index',function(req,res){
   if (req.session){
     res.render('index',{
       layout: 'inicio.jade',
@@ -93,7 +93,7 @@ app.get('/index',function(req,res){
   } else {
     res.end('notok');
   }
-});
+});*/
 
 // Go Login
 app.get('/login', function(req,res){
@@ -140,7 +140,8 @@ app.get('/prohibido', checkAuth, function(req,res){
   //res.writeHeader(200,{'Content-type':'text/html'});
   //res.end('Bienvenido, '+ req.session.user.username + ' :) ' + '<a href="/logout"> Salir </a>');
   res.render('prohibido',{
-  title: 'Prohibido'
+  title: 'Prohibido',
+  layout: 'inicio.jade'
   });
 });
 

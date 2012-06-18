@@ -1,8 +1,12 @@
 section#centrado
-  // Mostrar el formulario para loguearse
   div#form
-    form(method="post", action="/login")
-      input(name="user", type="text", placeholder="Nombre")
-      input(name="pass", type="password", placeholder="Password")
-      button( type="submit" ) Enviar
+    form#login(method="post", action="/login")
+      h1 Login
+      fieldset#inputs
+        input#username(name= 'user', type='text', placeholder='Username', autofocus='autofocus', required='required')
+        input#password(name= 'pass',type='password', placeholder='Password', required='required')
+      fieldset#actions
+        input#submit(type='submit', value='Entrar')  
+      
+      //button( type="submit" ) Enviar
 

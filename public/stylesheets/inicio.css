@@ -1,6 +1,8 @@
 * {
   margin: 0;
-  background-color: #808080;
+}
+html {
+  background: #808080;
 }
 #contanier {
   background-color: #808080;
@@ -19,9 +21,16 @@ p,
 b,
 a {
   background-color: #fff;
+  border-top-left-radius: 15px;
+  border-top-right-radius: 15px;
+}
+p#pad {
+  padding: 0.5%;
 }
 #centrado {
   background-color: #fff;
+  -webkit-border-radius: 5px;
+  -moz-border-radius: 5px;
   border-radius: 5px;
   margin: 0 auto;
   max-width: 90%;
@@ -35,6 +44,140 @@ img#dose.dos {
 }
 #form {
   float: left;
+  margin-left: 10%;
+  margin-rigth: 10%;
+  margin-top: 1%;
+}
+#login {
+  float: left;
+  margin-left: 1%;
+  margin-rigth: 1%;
+  margin-top: 1%;
+}
+#login:before {
+  border: 1px dashed #ccc;
+  top: 5px;
+  bottom: 5px;
+  left: 5px;
+  right: 5px;
+  -moz-box-shadow: 0 0 0 1px #fff;
+  -webkit-box-shadow: 0 0 0 1px #fff;
+  -webkit-box-shadow: 0 0 0 1px #fff;
+  -moz-box-shadow: 0 0 0 1px #fff;
+  box-shadow: 0 0 0 1px #fff;
+}
+h1 {
+  text-shadow: 0 1px 0 rgba(255,255,255,0.7), 0px 2px 0 rgba(0,0,0,0.5);
+  text-transform: uppercase;
+  text-align: center;
+  color: #666;
+  margin: 0 0 30px 0;
+  letter-spacing: 4px;
+  font: normal 26px/1 Verdana, Helvetica;
+  position: relative;
+}
+h1:after,
+h1:before {
+  background-color: #777;
+  height: 1px;
+  top: 15px;
+  width: 120px;
+}
+h2#texto {
+  color: #000;
+}
+#inputs input {
+  -webkit-box-shadow: #ccc 0 1px 1px inset, #fff 0 1px 0;
+  background-color: #f1f1f1;
+  background-image: url("http://www.red-team-design.com/wp-content/uploads/2011/09/login-sprite.png");
+  background-position: initial initial;
+  background-repeat: no-repeat no-repeat;
+  border: 1px solid #ccc;
+  border-bottom-left-radius: 5px;
+  border-bottom-right-radius: 5px;
+  border-top-left-radius: 5px;
+  border-top-right-radius: 5px;
+  -webkit-box-shadow: #ccc 0 1px 1px inset, #fff 0 1px 0;
+  -moz-box-shadow: #ccc 0 1px 1px inset, #fff 0 1px 0;
+  box-shadow: #ccc 0 1px 1px inset, #fff 0 1px 0;
+  margin: 0 0 10px;
+  padding: 15px 15px 15px 30px;
+  width: 352px;
+}
+#username {
+  background-position: 5px -2px !important;
+}
+#password {
+  background-position: 5px -52px !important;
+}
+#inputs {
+  border: none;
+}
+#inputs input:focus {
+  -webkit-box-shadow: #e8c291 0 0 0 1px inset;
+  background-color: #fff;
+  border-color: #e8c291;
+  -webkit-box-shadow: #e8c291 0 0 0 1px inset;
+  -moz-box-shadow: #e8c291 0 0 0 1px inset;
+  box-shadow: #e8c291 0 0 0 1px inset;
+  outline: none;
+}
+#actions {
+  border: none;
+  margin: 25px 0 0;
+}
+#submit {
+  -webkit-box-shadow: rgba(0,0,0,0.297) 0 0 1px, rgba(255,255,255,0.297) 0 1px 0 inset;
+  background-color: #ffb94b;
+  background-image: -webkit-linear-gradient(top, #fddb6f, #ffb94b);
+  border-bottom-left-radius: 3px;
+  border-bottom-right-radius: 3px;
+  border-color: #d69e31 #e3a037 #d5982d;
+  border-style: solid;
+  border-top-left-radius: 3px;
+  border-top-right-radius: 3px;
+  border-width: 1px;
+  -webkit-box-shadow: rgba(0,0,0,0.297) 0 0 1px, rgba(255,255,255,0.297) 0 1px 0 inset;
+  -moz-box-shadow: rgba(0,0,0,0.297) 0 0 1px, rgba(255,255,255,0.297) 0 1px 0 inset;
+  box-shadow: rgba(0,0,0,0.297) 0 0 1px, rgba(255,255,255,0.297) 0 1px 0 inset;
+  color: #8f5a0a;
+  cursor: pointer;
+  float: left;
+  font-family: Arial, Helvetica;
+  font-size: 15px;
+  font-style: normal;
+  font-variant: normal;
+  font-weight: bold;
+  height: 35px;
+  line-height: normal;
+  padding: 0;
+  text-shadow: rgba(255,255,255,0.496) 0 1px 0;
+  width: 120px;
+  margin-left: 40%;
+}
+#nav {
+  font-weight: true;
+  text-align: right;
+}
+#logos {
+  background-color: #ccc;
+  text-align: center;
+  padding: 10px;
+  border-bottom-left-radius: 15px;
+  border-bottom-right-radius: 15px;
+  -webkit-box-shadow: -10px 10px 12px rgba(50,50,50,0.85);
+  -moz-box-shadow: -10px 10px 12px rgba(50,50,50,0.85);
+  box-shadow: -10px 10px 12px rgba(50,50,50,0.85);
+}
+article {
+  display: inline-block;
+}
+article#diario {
+  margin-right: 30%;
+  padding: 2%;
+}
+article#suplemento {
+  padding: 2%;
 }
 @media screen and (max-width:800px) {
   #contanier {
