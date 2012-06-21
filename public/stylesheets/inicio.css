@@ -17,6 +17,9 @@ body {
 a {
   color: #00f;
 }
+a#box {
+  background-color: #ccc;
+}
 p,
 b,
 a {
@@ -173,10 +176,11 @@ article {
   display: inline-block;
 }
 article#diario {
-  margin-right: 30%;
+  margin-right: 10%;
   padding: 2%;
 }
 article#suplemento {
+  margin-left: 10%;
   padding: 2%;
 }
 @media screen and (max-width:800px) {

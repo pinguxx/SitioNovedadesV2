@@ -104,6 +104,15 @@ app.get('/login', function(req,res){
   });
 });
 
+// Go Diario
+app.get('/diario', function(req,res){
+  res.render('diario',{
+  title: 'Diario',
+  layout:'inicio.jade'  
+  });
+});
+
+
 // Funcion login
 app.post('/login', function(req,res){
   // Cuando el formulario es enviado viene en req.body
