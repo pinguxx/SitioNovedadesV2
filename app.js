@@ -80,21 +80,6 @@ app.get('/',function(req,res){
     });
 });
 
-
-// Go Index Administrador
-/*app.get('/index',function(req,res){
-  if (req.session){
-    res.render('index',{
-      layout: 'inicio.jade',
-      title: 'Inicio'
-    })
-     // nuff said 
-   // res.end('<a href="/login"> Acceso</a>');
-  } else {
-    res.end('notok');
-  }
-});*/
-
 // Go Login
 app.get('/login', function(req,res){
   // Mostrar el formulario para loguearse
@@ -104,11 +89,11 @@ app.get('/login', function(req,res){
   });
 });
 
-// Go Diario
-app.get('/diario', function(req,res){
+// Go Diario 24 junio 2012
+app.get('/diario', checkAuth, function(req,res){
   res.render('diario',{
   title: 'Diario',
-  layout:'inicio.jade'  
+  layout:'subidas.jade'  
   });
 });
 
