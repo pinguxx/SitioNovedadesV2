@@ -5,18 +5,22 @@ html {
   background: #808080;
 }
 input.button {
-  background: -webkit-gradient(linear, left top, left bottom, from(#a50aad), color-stop(0.5, #6b0d6b), to(#4a074a));
-  -webkit-border-radius: 5px;
-  -moz-border-radius: 5px;
-  border-radius: 5px;
-  border: 1px solid #5b139e;
+  background-color: #ffb94b;
+  -webkit-border-radius: 3px;
+  -moz-border-radius: 3px;
+  border-radius: 3px;
+  border: 1px solid #ffb94b;
   bottom: 20px;
   -webkit-box-shadow: 0px 1px 3px rgba(0,0,0,0.5), inset 0px 0px 3px rgba(255,255,255,0.4);
   -moz-box-shadow: 0px 1px 3px rgba(0,0,0,0.5), inset 0px 0px 3px rgba(255,255,255,0.4);
   box-shadow: 0px 1px 3px rgba(0,0,0,0.5), inset 0px 0px 3px rgba(255,255,255,0.4);
-  color: #fff;
+  color: #8f5a0a;
   cursor: pointer;
-  font-size: 18px;
+  font-size: 15px;
+  font-family: Arial, Helvetica;
+  font-style: normal;
+  font-variant: normal;
+  font-weight: blod;
   padding: 8px 30px;
   right: 20px;
   text-shadow: 0px -1px 0px rgba(0,0,0,0.1), 0px 1px 0px #912391;
