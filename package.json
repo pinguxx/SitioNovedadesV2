@@ -3,6 +3,9 @@
     "version": "0.0.1",
     "private": true,
     "author": "Edder Leonardo <@edderleonardo>",
+    "scripts": {  
+        "start": "node app"
+    },
     "dependencies": {
     	 "express": ">= 2.5.8",
     	 "jade": ">= 0.0.1",
