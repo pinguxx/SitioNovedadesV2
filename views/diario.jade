@@ -7,5 +7,7 @@ div#nav
         form(method='post', action='/upload_diario', enctype='multipart/form-data')
           | Ingresa el archivo : &nbsp
           input(name='diario', type='file')
+          input(name='nombre', type='text')
+          input(name='dia', type='hidden', value="#{new Date()}")
           <br> <br>
           input(type='submit', class='button', value='Subir')

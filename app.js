@@ -3,7 +3,9 @@
 */
 var express = require('express'),
     routes = require('./routes'),
-    stylus = require('stylus')
+    stylus = require('stylus'),
+    //nano conexión con base de datos.
+    nano = require('nano')('http://localhost:5984')
   ;
 var app = module.exports = express.createServer();
 
@@ -138,6 +140,27 @@ app.get('/prohibido', checkAuth, function(req,res){
   layout: 'inicio.jade'
   });
 });
+
+//funcion subir diario 
+app.post('/upload_diario', function(req, res){
+ // selecciono la base de datos
+  var db = nano.use('novedades')
+  // tomo los campos del form
+  var datos = {
+    nombre: req.body.nombre,
+    dia: req.body.dia
+  }
+  // insertar datos en la base de datos
+  db.insert(datos, function(err,doc){
+    if(!err){
+      res.writeHeader(200,{'Content-type':'text/html'});
+      res.end('Guardado');
+    }else{
+      res.end("Fallo en la insercion de registro en la Base de Datos: \n" +err);
+    }
+  });
+});
+
 
 app.listen(3001, function(){
   console.log('Server running on %s', app.address().port);
