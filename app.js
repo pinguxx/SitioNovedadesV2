@@ -4,6 +4,7 @@
 var express = require('express'),
     routes = require('./routes'),
     stylus = require('stylus'),
+    fs     = require('fs'),
     //nano conexión con base de datos.
     nano = require('nano')('http://localhost:5984')
   ;
@@ -136,25 +137,91 @@ app.get('/prohibido', checkAuth, function(req,res){
   //res.writeHeader(200,{'Content-type':'text/html'});
   //res.end('Bienvenido, '+ req.session.user.username + ' :) ' + '<a href="/logout"> Salir </a>');
   res.render('prohibido',{
-  title: 'Prohibido',
-  layout: 'inicio.jade'
+    title: 'Prohibido',
+    layout: 'inicio.jade'
   });
 });
 
 //funcion subir diario 
 app.post('/upload_diario', function(req, res){
  // selecciono la base de datos
-  var db = nano.use('novedades')
+  var db = nano.use('novedades');
+  
   // tomo los campos del form
   var datos = {
     nombre: req.body.nombre,
     dia: req.body.dia
-  }
+  };
+
   // insertar datos en la base de datos
   db.insert(datos, function(err,doc){
     if(!err){
-      res.writeHeader(200,{'Content-type':'text/html'});
-      res.end('Guardado');
+      var errors = [];
+      // Ya que express usa formidable por default
+      // todos los archivos ya subidos constituyen
+      // el objecto req.files
+      // Entonces iteramos a través de este objeto
+      // Para así habilitar multiples-files al mismo tiempo
+      for (var file in req.files) {
+
+        // Current file {curt}
+        var curt = req.files[file];
+        // A veces se nos filtra un `undefined` 
+        // Si hay undefined terminar esta iteración y continuar con la siguiente
+        if (!curt) continue;
+
+        // Puse esto dentro de un try/catch 
+        // por precaución, no se sabe si el archivo o
+        // el pipe van a fallar. Si eso sucede pues atrapar ese error
+        try {
+          // The magic
+          // la gran ventaja de pipe es que evita que la memoria utilizada
+          // por este proceso sea minio, ya que pipe evita cargar a memoria
+          // el archivo. Si no que lo envia directamente a la bdd
+          // curt.path es la dirección "fisica" del archivo subido por formidable
+          //
+          fs.createReadStream(curt.path).pipe(
+            // db.attachment toma los siguientes valores:
+            // nombre del documento (en este caso es mandado por couchdb)
+            // en el proceso de db.insert();
+            // el nombre del archivo (como el usuario lo conoce)
+            // null que es el archivo binario, null porque estamos usando pipe
+            // y curt.type que es el mime type del documento que se esta subiendo (tambien de formidable)
+            // y por último la revisión del documento que se esta insertando
+            // Para evitar conflictos (409 errors)
+            db.attachment.insert(doc.id, curt.name, null, curt.type,{ rev: doc.rev })
+          ) .on('error', function(error){console.log(error) });
+        } catch (exp) {
+          // Agregar el error al Array de errors
+          // Y hacer un log del mismo (y otra vez continuar con la siguiente iteración)
+          errors.push(exp);
+          console.log(exp);
+          continue;
+        }
+
+      }
+      if (errors.length) {
+        // informar al usuario de los errores encontrados
+        // Posiblemente no el mejor código pero este funciona
+        res.writeHeader(409,{'Content-type':'text/html'});
+        return res.end('Opsy<br>'+ errors.join('<br>'));
+      } else {
+        res.writeHeader(200,{'Content-type':'text/html'});
+
+        // TOTALMENTE INNECESARIO este loop
+        // Pero sirve para que mires que si se suben
+        if (req.files) {
+          res.write('Tus archivos estan en:<br>')
+          for (var file in req.files) {
+            var file = req.files[file]; 
+            if (!file) continue;
+            res.write('<p><a href="'+ db.config.url + '/'+ db.config.db + 
+                      '/'+doc.id +'/'+file.name +'">' + file.name+'</a>');
+          }
+        }
+        res.write('<br>')
+        return res.end('Guardado');
+      }
     }else{
       res.end("Fallo en la insercion de registro en la Base de Datos: \n" +err);
     }
