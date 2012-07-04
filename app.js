@@ -127,7 +127,7 @@ app.get('/logout', function(req,res){
     delete req.session.user
   }
   res.redirect('/login')
-})
+});
 
 // Express te permite separar tu respuesta en una serie de pasos
 // en este caso, primero debe pasar por checkAuth para poder primero
@@ -173,7 +173,7 @@ app.post('/upload_diario', function(req, res){
         // Puse esto dentro de un try/catch 
         // por precaución, no se sabe si el archivo o
         // el pipe van a fallar. Si eso sucede pues atrapar ese error
-        try {
+        //try {
           // The magic
           // la gran ventaja de pipe es que evita que la memoria utilizada
           // por este proceso sea minio, ya que pipe evita cargar a memoria
@@ -190,14 +190,14 @@ app.post('/upload_diario', function(req, res){
             // y por último la revisión del documento que se esta insertando
             // Para evitar conflictos (409 errors)
             db.attachment.insert(doc.id, curt.name, null, curt.type,{ rev: doc.rev })
-          ) .on('error', function(error){console.log(error) });
-        } catch (exp) {
+          ) .on('error', function(error){ //console.log(error) });
+        //} catch (exp) {
           // Agregar el error al Array de errors
           // Y hacer un log del mismo (y otra vez continuar con la siguiente iteración)
           errors.push(exp);
           console.log(exp);
-          continue;
-        }
+          //continue;
+        }); // );
 
       }
       if (errors.length) {
@@ -206,28 +206,50 @@ app.post('/upload_diario', function(req, res){
         res.writeHeader(409,{'Content-type':'text/html'});
         return res.end('Opsy<br>'+ errors.join('<br>'));
       } else {
-        res.writeHeader(200,{'Content-type':'text/html'});
-
-        // TOTALMENTE INNECESARIO este loop
-        // Pero sirve para que mires que si se suben
-        if (req.files) {
-          res.write('Tus archivos estan en:<br>')
-          for (var file in req.files) {
-            var file = req.files[file]; 
-            if (!file) continue;
-            res.write('<p><a href="'+ db.config.url + '/'+ db.config.db + 
-                      '/'+doc.id +'/'+file.name +'">' + file.name+'</a>');
-          }
+        function getNames (files) {
+          return Object.keys(files).map(function(file){
+            return files[file].name;
+          })
         }
-        res.write('<br>')
-        return res.end('Guardado');
+
+        return res.redirect('/subido?files=' + getNames(req.files || {}).join(';'));
       }
     }else{
       res.end("Fallo en la insercion de registro en la Base de Datos: \n" +err);
     }
   });
 });
+        
+// res.writeHeader(200,{'Content-type':'text/html'});
+   
+//         // TOTALMENTE INNECESARIO este loop
+//         // Pero sirve para que mires que si se suben
+//         if (req.files) {
+//           res.write('El archivos cargado : ')
+//           for (var file in req.files) {
+//             var file = req.files[file]; 
+//             if (!file) continue;
+//             res.write('<a href="'+ db.config.url + '/'+ db.config.db + 
+//                       '/'+doc.id +'/'+file.name +'">' + file.name+'</a>');
+//           } 
+//         }
+//         //res.write('')
+//         return res.end(' fue guardado');
+//       }
+//     }else{
+//       res.end("Fallo en la insercion de registro en la Base de Datos: \n" +err);
+//     }
+//   });
+// });
 
+app.get('/subido', function(req,res){
+  var files = req.query.files.split(';');
+  res.render('Ok',{
+    title: 'Datos insertados',
+    layout: 'subidas.jade',
+    files : files
+  });
+});
 
 app.listen(3001, function(){
   console.log('Server running on %s', app.address().port);
