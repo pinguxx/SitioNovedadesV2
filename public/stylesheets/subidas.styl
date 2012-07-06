@@ -1,29 +1,20 @@
-border-radius()
-  -webkit-border-radius arguments
-  -moz-border-radius arguments
-  border-radius arguments
-  
-box-shadow()
-  -webkit-box-shadow arguments
-  -moz-box-shadow arguments
-  box-shadow arguments
-
-* 
+*
   margin: 0
 
 html
-  background: gray
+  background: #808080
 
 input.button
-  //background: -webkit-gradient( linear, left top, left bottom, from(#a50aad), color-stop(0.50, #6b0d6b), to(#4a074a))
-  background-color: #FFB94B
-  border-radius: (3px)
-  //border: 1px solid #5b139e
-  border: 1px solid #FFB94B
+  background-color: #ffb94b
+  -webkit-border-radius: 3px
+  -moz-border-radius: 3px
+  border-radius: 3px
+  border: 1px solid #ffb94b
   bottom: 20px
-  box-shadow: 0px 1px 3px rgba(000,000,000,0.5), inset 0px 0px 3px rgba(255,255,255,0.4)
-  //color: #ffffff
-  color: #8F5A0A
+  -webkit-box-shadow: 0px 1px 3px rgba(0,0,0,0.5), inset 0px 0px 3px rgba(255,255,255,0.4)
+  -moz-box-shadow: 0px 1px 3px rgba(0,0,0,0.5), inset 0px 0px 3px rgba(255,255,255,0.4)
+  box-shadow: 0px 1px 3px rgba(0,0,0,0.5), inset 0px 0px 3px rgba(255,255,255,0.4)
+  color: #8f5a0a
   cursor: pointer
   font-size: 15px
   font-family: Arial, Helvetica
@@ -32,7 +23,7 @@ input.button
   font-weight: blod
   padding: 8px 30px
   right: 20px
-  text-shadow: 0px -1px 0px rgba(000,000,000,0.1), 0px 1px 0px rgba(145,035,145,1)
+  text-shadow: 0px -1px 0px rgba(0,0,0,0.1), 0px 1px 0px #912391
 
 #contanier
   background-color: #808080
@@ -50,23 +41,29 @@ h2#title
   margin-bottom: 10px
 
 p#pad
-  background-color: white
-  border-top-left-radius:(15px)
-  border-top-right-radius:(15px)
-  padding: .5%
+  background-color: #fff
+  border-top-left-radius: 15px
+  border-top-right-radius: 15px
+  padding: 0.5%
 
 #logos
-  background-color: #CCCCCC
-  border-bottom-left-radius:(15px)
-  border-bottom-right-radius:(15px)
-  box-shadow: -10px 10px 12px rgba(50, 50, 50, 0.85);
+  background-color: #ccc
+  border-bottom-left-radius: 15px
+  border-bottom-right-radius: 15px
+  -webkit-box-shadow: -10px 10px 12px rgba(50,50,50,0.85)
+  -moz-box-shadow: -10px 10px 12px rgba(50,50,50,0.85)
+  box-shadow: -10px 10px 12px rgba(50,50,50,0.85)
   padding: 10px
   text-align: center
 
 #UploadBox
-  background: #FFF
-  border-radius: (11px)
-  border: 1px solid #DFDFDF
+  background: #fff
+  -webkit-border-radius: 11px
+  -moz-border-radius: 11px
+  border-radius: 11px
+  border: 1px solid #dfdfdf
+  -webkit-box-shadow: 0px 0px 16px 0px rgba(0,0,0,0.2)
+  -moz-box-shadow: 0px 0px 16px 0px rgba(0,0,0,0.2)
   box-shadow: 0px 0px 16px 0px rgba(0,0,0,0.2)
   margin-bottom: 1%
   margin-top: 1%
@@ -74,5 +71,7 @@ p#pad
   margin-right: 20%
   padding: 30px
 
-
+.disabled
+  background: #ccc !important
+  cursor: wait !important
 

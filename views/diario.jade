@@ -23,7 +23,7 @@ div#nav
         form(method='post', action='/upload_diario', enctype='multipart/form-data')
           | Ingresa el archivo : &nbsp
           input#adjunto(name='diario', type='file')
-          //input(name='nombre', type='text')
+          input(name='tipo', type='hidden', value="Diario")
           input(name='dia', type='hidden', value="#{new Date()}")
           <br> <br>
           input#boton(name= 'enviar', type='submit', class='button disabled', value='Subir', disabled='disabled')

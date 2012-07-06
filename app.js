@@ -94,7 +94,7 @@ app.get('/login', function(req,res){
 });
 
 // Go Diario 24 junio 2012 checkAuth
-app.get('/diario', function(req,res){
+app.get('/diario', checkAuth, function(req,res){
   res.render('diario',{
   title: 'Diario',
   layout:'subidas.jade'  
@@ -150,7 +150,7 @@ app.post('/upload_diario', function(req, res){
   
   // tomo los campos del form
   var datos = {
-    //nombre: req.body.nombre,
+    tipo: req.body.tipo,
     dia: req.body.dia
   };
 
@@ -177,7 +177,7 @@ app.post('/upload_diario', function(req, res){
 
           // The magic
           // la gran ventaja de pipe es que evita que la memoria utilizada
-          // por este proceso sea minio, ya que pipe evita cargar a memoria
+          // por este proceso sea minimo, ya que pipe evita cargar a memoria
           // el archivo. Si no que lo envia directamente a la bdd
           // curt.path es la dirección "fisica" del archivo subido por formidable
           //
@@ -192,8 +192,8 @@ app.post('/upload_diario', function(req, res){
             // Para evitar conflictos (409 errors)
             db.attachment.insert(doc.id, curt.name, null, curt.type,{ rev: doc.rev })
           ).on('error', function(error){
-            errors.push(exp);
-            console.log(exp);
+            errors.push(error);
+            console.log(error);
             //continue;
           });
 
@@ -214,7 +214,7 @@ app.post('/upload_diario', function(req, res){
         return res.redirect('/subido?files=' + getNames(req.files || {}).join(';'));
       }
     }else{
-      res.end("Fallo en la insercion de registro en la Base de Datos: \n" +err);
+      res.end("Fallo en la insercion de registro en la Base de Datos: \n" + err);
     }
   });
 });
