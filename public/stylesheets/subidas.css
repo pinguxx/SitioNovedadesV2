@@ -74,5 +74,5 @@ p#pad {
 
 .disabled {
   background: #ccc !important;
-  pointer: none;
+  cursor: auto !important;
 }
