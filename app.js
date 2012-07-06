@@ -66,6 +66,7 @@ var checkAuth = function(req,res,next){
     } else {
       // si no, los datos no son correctos, hijacking?
       res.end('No estas logueado');
+      
     }
   } else {
     // No existe un usuario logueado
@@ -92,8 +93,8 @@ app.get('/login', function(req,res){
   });
 });
 
-// Go Diario 24 junio 2012
-app.get('/diario', checkAuth, function(req,res){
+// Go Diario 24 junio 2012 checkAuth
+app.get('/diario', function(req,res){
   res.render('diario',{
   title: 'Diario',
   layout:'subidas.jade'  
@@ -127,7 +128,7 @@ app.get('/logout', function(req,res){
     delete req.session.user
   }
   res.redirect('/login')
-});
+})
 
 // Express te permite separar tu respuesta en una serie de pasos
 // en este caso, primero debe pasar por checkAuth para poder primero
@@ -149,7 +150,7 @@ app.post('/upload_diario', function(req, res){
   
   // tomo los campos del form
   var datos = {
-    nombre: req.body.nombre,
+    //nombre: req.body.nombre,
     dia: req.body.dia
   };
 
@@ -173,7 +174,7 @@ app.post('/upload_diario', function(req, res){
         // Puse esto dentro de un try/catch 
         // por precaución, no se sabe si el archivo o
         // el pipe van a fallar. Si eso sucede pues atrapar ese error
-        //try {
+
           // The magic
           // la gran ventaja de pipe es que evita que la memoria utilizada
           // por este proceso sea minio, ya que pipe evita cargar a memoria
@@ -190,14 +191,11 @@ app.post('/upload_diario', function(req, res){
             // y por último la revisión del documento que se esta insertando
             // Para evitar conflictos (409 errors)
             db.attachment.insert(doc.id, curt.name, null, curt.type,{ rev: doc.rev })
-          ) .on('error', function(error){ //console.log(error) });
-        //} catch (exp) {
-          // Agregar el error al Array de errors
-          // Y hacer un log del mismo (y otra vez continuar con la siguiente iteración)
-          errors.push(exp);
-          console.log(exp);
-          //continue;
-        }); // );
+          ).on('error', function(error){
+            errors.push(exp);
+            console.log(exp);
+            //continue;
+          });
 
       }
       if (errors.length) {
@@ -206,6 +204,7 @@ app.post('/upload_diario', function(req, res){
         res.writeHeader(409,{'Content-type':'text/html'});
         return res.end('Opsy<br>'+ errors.join('<br>'));
       } else {
+        
         function getNames (files) {
           return Object.keys(files).map(function(file){
             return files[file].name;
@@ -219,28 +218,6 @@ app.post('/upload_diario', function(req, res){
     }
   });
 });
-        
-// res.writeHeader(200,{'Content-type':'text/html'});
-   
-//         // TOTALMENTE INNECESARIO este loop
-//         // Pero sirve para que mires que si se suben
-//         if (req.files) {
-//           res.write('El archivos cargado : ')
-//           for (var file in req.files) {
-//             var file = req.files[file]; 
-//             if (!file) continue;
-//             res.write('<a href="'+ db.config.url + '/'+ db.config.db + 
-//                       '/'+doc.id +'/'+file.name +'">' + file.name+'</a>');
-//           } 
-//         }
-//         //res.write('')
-//         return res.end(' fue guardado');
-//       }
-//     }else{
-//       res.end("Fallo en la insercion de registro en la Base de Datos: \n" +err);
-//     }
-//   });
-// });
 
 app.get('/subido', function(req,res){
   var files = req.query.files.split(';');

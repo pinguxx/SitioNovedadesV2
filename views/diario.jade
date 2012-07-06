@@ -1,3 +1,19 @@
+// script(type='text/javascript')     
+//   $(document).ready(function()){
+//     //var disabled = $('#boton').attr('disabled');
+//     $('#boton', this).attr('disabled', 'disabled');
+//     $('#acepta', this).attr('disabled', 'disabled');
+//     // activar / desactivar el boton de envio
+//       $('#acepta').click(function(){
+//         var disabled=$('#boton').attr('disabled');
+//           if(disabled) {
+//             $('#boton').attr('disabled', false);
+//           }else{
+//             $('#boton').attr('disabled', 'disabled');
+//                }
+//       });
+//   });
+
 div#nav
  p#pad Bienvenido, #{currentUser.username} <a href="/logout"> Salir </a> &nbsp &nbsp
   div#logos
@@ -6,8 +22,11 @@ div#nav
       span#UploadArea
         form(method='post', action='/upload_diario', enctype='multipart/form-data')
           | Ingresa el archivo : &nbsp
-          input(name='diario', type='file')
-          input(name='nombre', type='text')
+          input#adjunto(name='diario', type='file')
+          //input(name='nombre', type='text')
           input(name='dia', type='hidden', value="#{new Date()}")
+          <br><br>
+          | Archivo cargado? &nbsp
+          input#acepta(type='checkbox')
           <br> <br>
-          input(type='submit', class='button', value='Subir')
+          input#boton(name= 'enviar', type='submit', class='button', value='Subir', disabled='disabled')
