@@ -71,3 +71,8 @@ p#pad {
   margin-right: 20%;
   padding: 30px;
 }
+
+.disabled {
+  background: #ccc !important;
+  pointer: none;
+}

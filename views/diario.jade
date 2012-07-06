@@ -1,18 +1,18 @@
-// script(type='text/javascript')     
-//   $(document).ready(function()){
-//     //var disabled = $('#boton').attr('disabled');
-//     $('#boton', this).attr('disabled', 'disabled');
-//     $('#acepta', this).attr('disabled', 'disabled');
-//     // activar / desactivar el boton de envio
-//       $('#acepta').click(function(){
-//         var disabled=$('#boton').attr('disabled');
-//           if(disabled) {
-//             $('#boton').attr('disabled', false);
-//           }else{
-//             $('#boton').attr('disabled', 'disabled');
-//                }
-//       });
-//   });
+script(type='text/javascript')     
+  $(document).ready(function() {
+    var btn = $('#boton');
+    var adj = $('#adjunto');
+    adj.on('change', function () {
+      var atr = btn.attr('disabled');
+      if (atr && adj.val() != '') {
+        btn.removeAttr('disabled');
+        btn.removeClass('disabled')
+      } else {
+        btn.addClass('disabled')
+        btn.attr('disabled', true);
+      }
+    })
+  });
 
 div#nav
  p#pad Bienvenido, #{currentUser.username} <a href="/logout"> Salir </a> &nbsp &nbsp
@@ -25,8 +25,5 @@ div#nav
           input#adjunto(name='diario', type='file')
           //input(name='nombre', type='text')
           input(name='dia', type='hidden', value="#{new Date()}")
-          <br><br>
-          | Archivo cargado? &nbsp
-          input#acepta(type='checkbox')
           <br> <br>
-          input#boton(name= 'enviar', type='submit', class='button', value='Subir', disabled='disabled')
+          input#boton(name= 'enviar', type='submit', class='button disabled', value='Subir', disabled='disabled')
