@@ -101,6 +101,13 @@ app.get('/diario', checkAuth, function(req,res){
   });
 });
 
+// Go Suplementos 11 julio 2012 
+app.get('/suplemento', checkAuth, function(req, res){
+  res.render('suplemento',{
+  title: 'Suplementos',
+  layout:'subidas.jade'
+  });
+});
 
 // Funcion login
 app.post('/login', function(req,res){
@@ -219,6 +226,96 @@ app.post('/upload_diario', function(req, res){
   });
 });
 
+// funcion subir suplemento 11 julio 2012
+
+app.post('/upload_suplemento', function(req, res){
+ // selecciono la base de datos
+  var db = nano.use('novedades');
+  
+  // tomo los campos del form
+  var datos = {
+    tipo: req.body.tipo,
+    dia: req.body.dia
+  };
+
+  // insertar datos en la base de datos
+  db.insert(datos, function(err,doc){
+    if(!err){
+      var errors = [];
+      // Ya que express usa formidable por default
+      // todos los archivos ya subidos constituyen
+      // el objecto req.files
+      // Entonces iteramos a través de este objeto
+      // Para así habilitar multiples-files al mismo tiempo
+      for (var file in req.files) {
+
+        // Current file {curt}
+        var curt = req.files[file];
+        // A veces se nos filtra un `undefined` 
+        // Si hay undefined terminar esta iteración y continuar con la siguiente
+        if (!curt) continue;
+
+        // Puse esto dentro de un try/catch 
+        // por precaución, no se sabe si el archivo o
+        // el pipe van a fallar. Si eso sucede pues atrapar ese error
+
+          // The magic
+          // la gran ventaja de pipe es que evita que la memoria utilizada
+          // por este proceso sea minimo, ya que pipe evita cargar a memoria
+          // el archivo. Si no que lo envia directamente a la bdd
+          // curt.path es la dirección "fisica" del archivo subido por formidable
+          //
+          fs.createReadStream(curt.path).pipe(
+            // db.attachment toma los siguientes valores:
+            // nombre del documento (en este caso es mandado por couchdb)
+            // en el proceso de db.insert();
+            // el nombre del archivo (como el usuario lo conoce)
+            // null que es el archivo binario, null porque estamos usando pipe
+            // y curt.type que es el mime type del documento que se esta subiendo (tambien de formidable)
+            // y por último la revisión del documento que se esta insertando
+            // Para evitar conflictos (409 errors)
+            db.attachment.insert(doc.id, curt.name, null, curt.type,{ rev: doc.rev })
+          ).on('error', function(error){
+            errors.push(error);
+            console.log(error);
+            //continue;
+          });
+
+      }
+      if (errors.length) {
+        // informar al usuario de los errores encontrados
+        // Posiblemente no el mejor código pero este funciona
+        res.writeHeader(409,{'Content-type':'text/html'});
+        return res.end('Opsy<br>'+ errors.join('<br>'));
+      } else {
+        
+        function getNames (files) {
+          return Object.keys(files).map(function(file){
+            return files[file].name;
+          })
+        }
+
+        return res.redirect('/suplemento?files=' + getNames(req.files || {}).join(';'));
+      }
+    }else{
+      res.end("Fallo en la insercion de registro en la Base de Datos: \n" + err);
+    }
+  });
+});
+
+
+// Subido Suplemento
+app.get('/suplemento', function(req,res){
+  var files = req.query.files.split(';');
+  res.render('Ok',{
+    title: 'Datos insertados',
+    layout: 'subidas.jade',
+    files : files
+  });
+});
+
+
+// Subido Diario
 app.get('/subido', function(req,res){
   var files = req.query.files.split(';');
   res.render('Ok',{

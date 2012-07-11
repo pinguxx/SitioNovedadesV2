@@ -1,0 +1,42 @@
+script(type='text/javascript')     
+  $(document).ready(function() {
+    var btn = $('#boton');
+    var adj = $('#adjunto');
+    adj.on('change', function () {
+      var atr = btn.attr('disabled');
+      if (atr && adj.val() != '') {
+        btn.removeAttr('disabled');
+        btn.removeClass('disabled')
+      } else {
+        btn.addClass('disabled')
+        btn.attr('disabled', true);
+      }
+    })
+  });
+
+div#nav
+ p#pad Bienvenido, #{currentUser.username} <a href="/logout"> Salir </a> &nbsp &nbsp
+  div#logos
+    div#UploadBox
+      h2#title Subir Suplementos
+      span#UploadArea
+        form(method='post', action='/upload_suplemento', enctype='multipart/form-data')
+          | Don Balón : &nbsp
+          input#adjunto(name='suplemento', type='file')
+          <br> <br>
+          | Marcador : &nbsp
+          input#adjunto(name='suplemento1', type='file')
+          <br> <br>
+          | Gente : &nbsp
+          input#adjunto(name='suplemento2', type='file')
+          <br> <br>
+          | Justicia : &nbsp
+          input#adjunto(name='suplemento3', type='file')
+          <br> <br>
+          | Local : &nbsp
+          input#adjunto(name='suplemento', type='file')
+          
+          input(name='tipo', type='hidden', value="Suplemento")
+          input(name='dia', type='hidden', value="#{new Date()}")
+          <br> <br>
+          input#boton(name= 'enviar', type='submit', class='button disabled', value='Subir', disabled='disabled')
