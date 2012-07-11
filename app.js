@@ -4,6 +4,7 @@
 var express = require('express'),
     routes = require('./routes'),
     stylus = require('stylus'),
+    async  = require('async'),
     fs     = require('fs'),
     //nano conexión con base de datos.
     nano = require('nano')('http://localhost:5984')
@@ -238,74 +239,54 @@ app.post('/upload_suplemento', function(req, res){
     dia: req.body.dia
   };
 
+
+
   // insertar datos en la base de datos
   db.insert(datos, function(err,doc){
     if(!err){
       var errors = [];
-      // Ya que express usa formidable por default
-      // todos los archivos ya subidos constituyen
-      // el objecto req.files
-      // Entonces iteramos a través de este objeto
-      // Para así habilitar multiples-files al mismo tiempo
-      for (var file in req.files) {
-
-        // Current file {curt}
-        var curt = req.files[file];
-        // A veces se nos filtra un `undefined` 
-        // Si hay undefined terminar esta iteración y continuar con la siguiente
-        if (!curt) continue;
-
-        // Puse esto dentro de un try/catch 
-        // por precaución, no se sabe si el archivo o
-        // el pipe van a fallar. Si eso sucede pues atrapar ese error
-
-          // The magic
-          // la gran ventaja de pipe es que evita que la memoria utilizada
-          // por este proceso sea minimo, ya que pipe evita cargar a memoria
-          // el archivo. Si no que lo envia directamente a la bdd
-          // curt.path es la dirección "fisica" del archivo subido por formidable
-          //
-          fs.createReadStream(curt.path).pipe(
-            // db.attachment toma los siguientes valores:
-            // nombre del documento (en este caso es mandado por couchdb)
-            // en el proceso de db.insert();
-            // el nombre del archivo (como el usuario lo conoce)
-            // null que es el archivo binario, null porque estamos usando pipe
-            // y curt.type que es el mime type del documento que se esta subiendo (tambien de formidable)
-            // y por último la revisión del documento que se esta insertando
-            // Para evitar conflictos (409 errors)
-            db.attachment.insert(doc.id, curt.name, null, curt.type,{ rev: doc.rev })
-          ).on('error', function(error){
-            errors.push(error);
-            console.log(error);
-            //continue;
+      function controlFlow (id){
+        return function flow (arg, cb) {
+          if (typeof arg === 'function' && !cb) cb = arg;
+          var curt = req.files[id];
+          db.get(doc.id, function (error, doc1){
+            if (error) return cb(error);
+            fs.createReadStream(curt.path).pipe(
+              // El problema?
+              // Las revisiones del documento
+              // Pudimos usar un método más útil por parte de la base de datos
+              // Pero para los propósitos, con esto tenemos suficiente ;)
+              db.attachment.insert(doc.id, id + '-' + curt.name, null, curt.type,{ rev: doc1._rev })
+            ).on('error', function (error){
+              cb(error);
+            }).once('end', function (){
+              cb(null, 'ok');
+            });
           });
-
+        };
       }
-      if (errors.length) {
-        // informar al usuario de los errores encontrados
-        // Posiblemente no el mejor código pero este funciona
-        res.writeHeader(409,{'Content-type':'text/html'});
-        return res.end('Opsy<br>'+ errors.join('<br>'));
-      } else {
-        
-        function getNames (files) {
-          return Object.keys(files).map(function(file){
-            return files[file].name;
-          })
+      var names = Object.keys(req.files);
+      var saveAtt = [];
+      names.forEach(function (file){
+        return saveAtt.push(controlFlow(file));
+      });
+      async.series(saveAtt, function (err, results){
+        if (err){
+          res.writeHeader(409,{'Content-type':'text/html'});
+          return res.end('Opsy<br>'+ err.join('<br>'));
+        } else {
+          return res.redirect('/suplemento_end?files=' + names.join(';'));
         }
-
-        return res.redirect('/suplemento?files=' + getNames(req.files || {}).join(';'));
-      }
+      });
     }else{
-      res.end("Fallo en la insercion de registro en la Base de Datos: \n" + err);
+      res.end("Fallo en la inserción de registro en la Base de Datos: \n" + err);
     }
   });
 });
 
 
 // Subido Suplemento
-app.get('/suplemento', function(req,res){
+app.get('/suplemento_end', function(req,res){
   var files = req.query.files.split(';');
   res.render('Ok',{
     title: 'Datos insertados',

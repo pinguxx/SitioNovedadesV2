@@ -1,15 +1,16 @@
 {
-    "name": "NovedadesdeCamepeche",
-    "version": "0.0.1",
-    "private": true,
-    "author": "Edder Leonardo <@edderleonardo>",
-    "scripts": {  
-        "start": "node app"
-    },
-    "dependencies": {
-    	 "express": ">= 2.5.8",
-    	 "jade": ">= 0.0.1",
-    	 "stylus": ">= 0",
-    	 "nano": ">=0"
+  "name": "NovedadesdeCamepeche",
+  "version": "0.0.1",
+  "private": true,
+  "author": "Edder Leonardo <@edderleonardo>",
+  "scripts": {
+    "start": "node app"
+  },
+  "dependencies": {
+    "express": ">= 2.5.8",
+    "jade": ">= 0.0.1",
+    "stylus": ">= 0",
+    "nano": ">=0",
+    "async": "~0.1.22"
   }
 }

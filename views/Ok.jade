@@ -2,7 +2,11 @@ div#nav
   p#pad Bienvenido, #{currentUser.username} <a href="/logout"> Salir </a> &nbsp &nbsp
     div#logos
       div#UploadBox
-        h1 Tu archivo fue cargado con exito.!!
-        <br>
+        h1 Tu archivo(s) fue cargado con exito.!!
+        ul
+            - files.forEach(function (file){
+                li #{file}
+            - });
+        br
         form(action='/prohibido', method='get')
           input(type='submit', value='Regresar', class='button')
