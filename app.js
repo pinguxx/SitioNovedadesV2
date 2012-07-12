@@ -154,7 +154,7 @@ app.get('/prohibido', checkAuth, function(req,res){
 //funcion subir diario 
 app.post('/upload_diario', function(req, res){
  // selecciono la base de datos
-  var db = nano.use('novedades');
+  var db = nano.use('diarios');
   
   // tomo los campos del form
   var datos = {
@@ -231,7 +231,7 @@ app.post('/upload_diario', function(req, res){
 
 app.post('/upload_suplemento', function(req, res){
  // selecciono la base de datos
-  var db = nano.use('novedades');
+  var db = nano.use('suplementos');
   
   // tomo los campos del form
   var datos = {
