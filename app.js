@@ -241,18 +241,29 @@ app.post('/upload_suplemento', function(req, res){
 
   // insertar datos en la base de datos. Si inserto un 'for' aqui no me adjunta el archivo y me pone todos los nombres
   // en tipo donbalon, marcador, gente, justicia , local
-  for (var file in req.files) {
-    var curt = req.files[file];
-    if (!curt) continue;
-      fs.createReadStream(curt.path).pipe(
-        // for aquí no corre
-        db.attachment.insert(new Date() + '-' + curt.name , curt.name, null, curt.type)
-      ).on('error', function(error){
-        errors.push(error);
-        console.log(error);
-      });
+  function controlFlow (id){
+    db.insert(datos,id + '-' + Date.now(), function(err, doc){
+      if (!err) {
+        var curt = req.files[id];
+        console.log(id)
+        fs.createReadStream(curt.path).pipe(
+          db.attachment.insert(doc.id, curt.name, null, curt.type, { rev : doc.rev })
+        ).on('error', function(error){
+          errors.push(error);
+          console.log(error);
+        });
+      } else {
+        console.dir(err);
+      }
+    });
   }
-  res.end('uploading')
+  Object.keys(req.files).forEach(function(file){
+    if (req.files[file].name) {
+      controlFlow.call(this, [file]);
+    }
+  });
+
+  res.end('uploading');
 // db.insert(datos, function(err,doc){
 //     if(!err){
 //       var errors = [];
