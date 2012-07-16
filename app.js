@@ -239,47 +239,38 @@ app.post('/upload_suplemento', function(req, res){
     dia: req.body.dia
   };
 
-
-
   // insertar datos en la base de datos
-  db.insert(datos, function(err,doc){
+db.insert(datos, function(err,doc){
     if(!err){
       var errors = [];
-      function controlFlow (id){
-        return function flow (arg, cb) {
-          if (typeof arg === 'function' && !cb) cb = arg;
-          var curt = req.files[id];
-          db.get(doc.id, function (error, doc1){
-            if (error) return cb(error);
-            fs.createReadStream(curt.path).pipe(
-              // El problema?
-              // Las revisiones del documento
-              // Pudimos usar un método más útil por parte de la base de datos
-              // Pero para los propósitos, con esto tenemos suficiente ;)
-              db.attachment.insert(doc.id, id + '-' + curt.name, null, curt.type,{ rev: doc1._rev })
-            ).on('error', function (error){
-              cb(error);
-            }).once('end', function (){
-              cb(null, 'ok');
-            });
+      for (var file in req.files) {
+        var curt = req.files[file];
+        if (!curt) continue;
+          fs.createReadStream(curt.path).pipe(
+            db.attachment.insert(doc.id, curt.name, null, curt.type,{ rev: doc.rev })
+          ).on('error', function(error){
+            errors.push(error);
+            console.log(error);
           });
-        };
+
       }
-      var names = Object.keys(req.files);
-      var saveAtt = [];
-      names.forEach(function (file){
-        return saveAtt.push(controlFlow(file));
-      });
-      async.series(saveAtt, function (err, results){
-        if (err){
-          res.writeHeader(409,{'Content-type':'text/html'});
-          return res.end('Opsy<br>'+ err.join('<br>'));
-        } else {
-          return res.redirect('/suplemento_end?files=' + names.join(';'));
+      if (errors.length) {
+        // informar al usuario de los errores encontrados
+        // Posiblemente no el mejor código pero este funciona
+        res.writeHeader(409,{'Content-type':'text/html'});
+        return res.end('Opsy<br>'+ errors.join('<br>'));
+      } else {
+        
+        function getNames (files) {
+          return Object.keys(files).map(function(file){
+            return files[file].name;
+          })
         }
-      });
+
+        return res.redirect('/suplemento_end?files=' + getNames(req.files || {}).join(';'));
+      }
     }else{
-      res.end("Fallo en la inserción de registro en la Base de Datos: \n" + err);
+      res.end("Fallo en la insercion de registro en la Base de Datos: \n" + err);
     }
   });
 });

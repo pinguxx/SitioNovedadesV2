@@ -21,22 +21,46 @@ div#nav
       h2#title Subir Suplementos
       span#UploadArea
         form(method='post', action='/upload_suplemento', enctype='multipart/form-data')
-          | Don Balón : &nbsp
-          input#adjunto(name='suplemento', type='file')
-          <br> <br>
-          | Marcador : &nbsp
-          input#adjunto(name='suplemento1', type='file')
-          <br> <br>
-          | Gente : &nbsp
-          input#adjunto(name='suplemento2', type='file')
-          <br> <br>
-          | Justicia : &nbsp
-          input#adjunto(name='suplemento3', type='file')
-          <br> <br>
-          | Local : &nbsp
-          input#adjunto(name='suplemento4', type='file')
-          
-          input(name='tipo', type='hidden', value="Suplemento")
-          input(name='dia', type='hidden', value="#{new Date()}")
-          <br> <br>
+          table(align='center')
+            tr
+              td Don Balón : &nbsp
+              td  
+                input#adjunto(name='donbalon', type='file')
+              td  
+                //input#boton(name= 'enviar', type='submit', class='button disabled', value='Subir', disabled='disabled')
+                input(name='tipo', type='hidden', value="balon")
+                input(name='dia', type='hidden', value="#{new Date()}")
+            tr
+              td Marcador : &nbsp
+              td
+                input#adjunto(name='marcador', type='file')
+              td  
+                //input#boton(name= 'enviar', type='submit', class='button disabled', value='Subir', disabled='disabled')
+                input(name='tipo', type='hidden', value="marcador")
+                input(name='dia', type='hidden', value="#{new Date()}")
+            tr  
+              td Gente : &nbsp
+              td
+                input#adjunto(name='gente', type='file')
+              td 
+                //input#boton(name= 'enviar', type='submit', class='button disabled', value='Subir', disabled='disabled')
+                input(name='tipo', type='hidden', value="gente")
+                input(name='dia', type='hidden', value="#{new Date()}")
+            tr
+              td Justicia : &nbsp
+              td
+                input#adjunto(name='justicia', type='file')
+              td
+                //input#boton(name= 'enviar', type='submit', class='button disabled', value='Subir', disabled='disabled')
+                input(name='tipo', type='hidden', value="justicia")
+                input(name='dia', type='hidden', value="#{new Date()}")
+             tr 
+              td Local : &nbsp
+              td
+                input#adjunto(name='local', type='file')
+              td
+                //input#boton(name= 'enviar', type='submit', class='button disabled', value='Subir', disabled='disabled')
+                input(name='tipo', type='hidden', value="local")
+                input(name='dia', type='hidden', value="#{new Date()}")
+
           input#boton(name= 'enviar', type='submit', class='button disabled', value='Subir', disabled='disabled')
