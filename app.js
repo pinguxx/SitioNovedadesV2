@@ -239,7 +239,8 @@ app.post('/upload_suplemento', function(req, res){
     dia: req.body.dia
   };
 
-  // insertar datos en la base de datos
+  // insertar datos en la base de datos. Si inserto un 'for' aqui no me adjunta el archivo y me pone todos los nombres
+  // en tipo donbalon, marcador, gente, justicia , local
 db.insert(datos, function(err,doc){
     if(!err){
       var errors = [];
@@ -247,6 +248,7 @@ db.insert(datos, function(err,doc){
         var curt = req.files[file];
         if (!curt) continue;
           fs.createReadStream(curt.path).pipe(
+            // for aquí no corre
             db.attachment.insert(doc.id, curt.name, null, curt.type,{ rev: doc.rev })
           ).on('error', function(error){
             errors.push(error);
@@ -255,8 +257,6 @@ db.insert(datos, function(err,doc){
 
       }
       if (errors.length) {
-        // informar al usuario de los errores encontrados
-        // Posiblemente no el mejor código pero este funciona
         res.writeHeader(409,{'Content-type':'text/html'});
         return res.end('Opsy<br>'+ errors.join('<br>'));
       } else {
@@ -274,7 +274,6 @@ db.insert(datos, function(err,doc){
     }
   });
 });
-
 
 // Subido Suplemento
 app.get('/suplemento_end', function(req,res){
