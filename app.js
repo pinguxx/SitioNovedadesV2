@@ -79,9 +79,9 @@ var checkAuth = function(req,res,next){
 //Pagina index para el usario muestrar la seleccion de los diarios
 
 app.get('/',function(req,res){
-    res.render('user',{
-      layout: 'inicio.jade',
-      title: 'Inicio'
+    res.render('consultar',{
+      layout: 'user.jade',       // Plantilla, agregado para la vista de usuario.
+      title: 'Inicio',
     });
 });
 
@@ -238,9 +238,12 @@ app.post('/upload_suplemento', function(req, res){
     tipo: req.body.tipo,
     dia: req.body.dia
   };
+  
+//db.insert(datos, function(err,doc){
+  //   if(!err){
+       var errors = [];
+  
 
-  // insertar datos en la base de datos. Si inserto un 'for' aqui no me adjunta el archivo y me pone todos los nombres
-  // en tipo donbalon, marcador, gente, justicia , local
   function controlFlow (id){
     db.insert(datos,id + '-' + Date.now(), function(err, doc){
       if (!err) {
@@ -263,29 +266,31 @@ app.post('/upload_suplemento', function(req, res){
     }
   });
 
-  res.end('uploading');
+ // res.end('uploading');
 // db.insert(datos, function(err,doc){
 //     if(!err){
 //       var errors = [];
 
-//       if (errors.length) {
-//         res.writeHeader(409,{'Content-type':'text/html'});
-//         return res.end('Opsy<br>'+ errors.join('<br>'));
-//       } else {
+//        if (errors.length) {
+//          res.writeHeader(409,{'Content-type':'text/html'});
+//          return res.end('Opsy<br>'+ errors.join('<br>'));
+//        } else {
         
-//         function getNames (files) {
-//           return Object.keys(files).map(function(file){
-//             return files[file].name;
-//           })
-//         }
+          function getNames (files) {
+            return Object.keys(files).map(function(file){
+              return files[file].name;
+            })
+          }
 
-//         return res.redirect('/suplemento_end?files=' + getNames(req.files || {}).join(';'));
-//       }
-//     }else{
-//       res.end("Fallo en la insercion de registro en la Base de Datos: \n" + err);
-//     }
-//   });
-});
+          return res.redirect('/suplemento_end?files=' + getNames(req.files || {}).join(';'));
+//        }
+//      }else{
+//        res.end("Fallo en la insercion de registro en la Base de Datos: \n" + err);
+//      }
+//    });
+ });
+// }
+
 
 // Subido Suplemento
 app.get('/suplemento_end', function(req,res){

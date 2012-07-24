@@ -4,6 +4,9 @@
 html {
   background: #808080;
 }
+img {
+  margin-left: 2%;
+}
 #contanier {
   background-color: #808080;
   margin: 0 auto;

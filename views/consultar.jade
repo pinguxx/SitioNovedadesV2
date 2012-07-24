@@ -1,0 +1,37 @@
+script
+  $(function() {
+      $( "#datepicker" ).datepicker();
+      $( "#datepicker2" ).datepicker();
+   });
+
+div#container 
+  div#pad	
+  div#seleccion
+      section#centrado 
+        div#consuldiario
+          article#consuldiario
+            h1 Consultar Tabloide
+            <br>
+            form(method='#', action='/#')
+              p Selecciona la fecha: &nbsp
+                input(type="text", id="datepicker", placeholder="Seleccione una Fecha")
+              <br>
+              input#button(name= 'diario', type='submit', value='Consultar')
+
+        div#consulsuple
+          article#consulsuple
+            h1 Consultar Suplemento
+            <br>
+            form(method='#', action='/#')
+              p Elija un Suplemento: &nbsp
+                select(name='suple')
+                  option(value='b') Don Balon
+                  option(value='m') Marcador
+                  option(value='g') Gente   
+                  option(value='j') Justicia
+                  option(value='l') Local
+                | &nbsp
+                input(type="text", id="datepicker2", placeholder="Seleccione una Fecha")
+              <br>
+              input#button(name= 'diario', type='submit', value='Consultar')
+
