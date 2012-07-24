@@ -1,0 +1,8 @@
+Vista solo tengo esta pero necesito validarla de lo que llegue del jquery en caso del diario y en caso del 
+suplemento lo que tenga en el select y el jquery.
+
+function (doc){
+  if(/donbalon/g.test(doc._id)){
+  emit (doc.dia, doc);
+  }
+}
