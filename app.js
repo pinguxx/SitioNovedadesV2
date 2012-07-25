@@ -313,6 +313,35 @@ app.get('/subido', function(req,res){
   });
 });
 
+app.post('/search', function (req, res){
+  var date = req.body.date.split('/')
+  date = new Date(date[2],date[1] - 1, date[0])
+  var db;
+  switch (req.body.item) {
+    case "suplemento":
+      db = nano.use('suplementos')
+      break;
+    case "diario":
+      db = nano.use('diario')
+      break;
+    default: 
+      return res.end('404');
+      break
+  }
+  console.log(req.body)
+  req.body.suple = req.body.suple.toLowerCase().replace(/ /g, '')
+
+  db.view('supl', req.body.suple, { key: date.toDateString(), limit: 1}, function (err, data){
+    if (err) res.end('error')
+    var doc = data.rows[0].value
+    res.render('viewer', {
+      title: 'viewer',
+      layout:false,
+      doc: doc,
+      url: 'http://localhost:5984/'+req.body.item + '/'+ doc._id + '/' + Object.keys(doc._attachments)[0]
+    })
+  })
+})
 app.listen(3001, function(){
   console.log('Server running on %s', app.address().port);
 });

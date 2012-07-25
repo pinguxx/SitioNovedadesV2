@@ -1,6 +1,6 @@
 script
   $(function() {
-      $( "#datepicker" ).datepicker();
+      var dt = $( "#datepicker" ).datepicker();
       $( "#datepicker2" ).datepicker();
    });
 
@@ -12,26 +12,28 @@ div#container
           article#consuldiario
             h1 Consultar Tabloide
             <br>
-            form(method='#', action='/#')
+            form(method='POST', action='/search')
+              input(type="hidden", name="item",value="diario")
               p Selecciona la fecha: &nbsp
-                input(type="text", id="datepicker", placeholder="Seleccione una Fecha")
+                input(type="text", id="datepicker",name="date", placeholder="Seleccione una Fecha")
               <br>
-              input#button(name= 'diario', type='submit', value='Consultar')
+              input#button(name='diario', type='submit', value='Consultar')
 
         div#consulsuple
           article#consulsuple
             h1 Consultar Suplemento
             <br>
-            form(method='#', action='/#')
+            form(method='POST', action='/search')
+              input(type="hidden", name="item",value="suplemento")
               p Elija un Suplemento: &nbsp
                 select(name='suple')
-                  option(value='b') Don Balon
-                  option(value='m') Marcador
-                  option(value='g') Gente   
-                  option(value='j') Justicia
-                  option(value='l') Local
+                  option(value='donbalon') Don Balon
+                  option(value='marcador') Marcador
+                  option(value='gente') Gente   
+                  option(value='Justicia') Justicia
+                  option(value='local') Local
                 | &nbsp
-                input(type="text", id="datepicker2", placeholder="Seleccione una Fecha")
+                input(type="text", id="datepicker2",name="date", placeholder="Seleccione una Fecha")
               <br>
               input#button(name= 'diario', type='submit', value='Consultar')
 

@@ -6,3 +6,14 @@ function (doc){
   emit (doc.dia, doc);
   }
 }
+
+# Nueva vista en vez de la de arriba:
+
+function(doc) {
+  if (!!~doc._id.search('donbalon')) {
+    var date = new Date(doc.dia)
+    emit(date.toDateString(), doc)
+  }
+}
+
+# Tendrias que crear una vista por cada tipo de documento, la idea es esa
